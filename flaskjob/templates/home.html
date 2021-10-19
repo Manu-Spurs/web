@@ -1,0 +1,29 @@
+{% extends "temp.html" %}
+{% block content %}
+<div class="yosegi-InlineWhatWhere"><form class="yosegi-InlineWhatWhere-form" id="jobsearch" method="get" action="/jobs?q=&amp;l=new%20york"><div class="yosegi-InlineWhatWhere-searchBox"><div class="yosegi-EmbeddedLabelInput yosegi-InlineWhatWhere-what"><div><div class="icl-TextInputClearable"><div class="icl-TextInput"><div class="icl-TextInput-labelWrapper"><label id="label-text-input-what" class="icl-TextInput-label" for="text-input-what" tabindex="-1">What</label></div><div class="icl-TextInput-wrapper"><input type="text" aria-labelledby="label-text-input-what" id="text-input-what" name="q" placeholder="job title, keywords, or company" value="" autocomplete="off" aria-owns="text-input-what-suggestion-list" class="icl-TextInput-control icl-TextInput-control--withIconRight" aria-invalid="false"><span class="icl-TextInput-icon iconRight" aria-hidden="true"><span aria-hidden="true" class=""><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" fill="none" aria-hidden="true"><defs></defs><path fill="#767676" fill-rule="evenodd" d="M11.4038 12.3048C10.7084 12.7451 9.88397 13 9 13c-2.48528 0-4.5-2.0147-4.5-4.5C4.5 6.01472 6.51472 4 9 4c2.4853 0 4.5 2.01472 4.5 4.5 0 .87711-.2509 1.6956-.6849 2.3876l3.5089 3.5089c.1952.1953.1952.5119 0 .7071l-.7071.7072c-.1953.1952-.5119.1952-.7071 0l-3.506-3.506zM11.5 8.5c0 1.38071-1.1193 2.5-2.5 2.5-1.38071 0-2.5-1.11929-2.5-2.5S7.61929 6 9 6c1.3807 0 2.5 1.11929 2.5 2.5z" clip-rule="evenodd"></path></svg></span></span></div></div></div><div class="autocomplete-container" style="z-index:2;position:relative;margin:0px;padding:0px"><div id="text-input-what-suggestion-list"></div></div></div></div><div class="yosegi-EmbeddedLabelInput yosegi-InlineWhatWhere-where"><div><div class="icl-TextInputClearable"><div class="icl-TextInput"><div class="icl-TextInput-labelWrapper"><label id="label-text-input-where" class="icl-TextInput-label" for="text-input-where" tabindex="-1">Where</label></div><div class="icl-TextInput-wrapper"><input type="text" aria-labelledby="label-text-input-where" id="text-input-where" name="l" placeholder="City, state, zip code, or “remote”" value="City, state, zip code, or rem" autocomplete="off" aria-owns="text-input-where-suggestion-list" class="icl-TextInput-control icl-TextInput-control--withIconRight" aria-invalid="false"><span class="icl-TextInput-icon iconRight" aria-hidden="true"><span aria-hidden="true" class=""><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" aria-hidden="true"><defs></defs><path fill="#767676" fill-rule="evenodd" d="M5.81104 8.2c0-2.322 1.87303-4.2 4.18889-4.2 2.31587 0 4.18887 1.878 4.18887 4.2 0 2.581-2.8123 6.1691-3.8282 7.3811-.1906.2274-.5307.2274-.72131 0C8.62332 14.3691 5.81104 10.781 5.81104 8.2zm4.1889 2.0029c1.10456 0 1.99996-.89545 1.99996-2.00002 0-1.10457-.8954-2-1.99996-2-1.10457 0-2 .89543-2 2s.89543 2.00002 2 2.00002z" clip-rule="evenodd"></path></svg></span></span></div></div></div><div class="autocomplete-container" style="z-index:2;position:relative;margin:0px;padding:0px"><div id="text-input-where-suggestion-list"></div></div></div></div></div><button class="yosegi-InlineWhatWhere-primaryButton" type="submit">Find jobs</button></form></div>
+    {% for post in posts.items %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{url_for('user_posts', username=post.author.username)}}">{{ post.author.username }}</a>
+              <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+          </div>
+        </article>
+    {% endfor %}
+    {% for page_num  in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+        {% if posts.page == page_num %}
+            <a class= "btn btn-info mb-4" href="{{url_for('home', page=page_num)}}">{{page_num}}</a>
+        {% else %}
+            <a class= "btn btn-outline-info mb-4" href="{{url_for('home', page=page_num)}}">{{page_num}}</a>
+
+        {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+{% endblock content %}
